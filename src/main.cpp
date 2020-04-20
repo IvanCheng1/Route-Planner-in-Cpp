@@ -11,14 +11,14 @@
 using namespace std::experimental;
 
 static std::optional<std::vector<std::byte>> ReadFile(const std::string &path)
-{   
+{
     std::ifstream is{path, std::ios::binary | std::ios::ate};
     if( !is )
         return std::nullopt;
-    
+
     auto size = is.tellg();
-    std::vector<std::byte> contents(size);    
-    
+    std::vector<std::byte> contents(size);
+
     is.seekg(0);
     is.read((char*)contents.data(), size);
 
@@ -28,7 +28,7 @@ static std::optional<std::vector<std::byte>> ReadFile(const std::string &path)
 }
 
 int main(int argc, const char **argv)
-{    
+{
     std::string osm_data_file = "";
     if( argc > 1 ) {
         for( int i = 1; i < argc; ++i )
@@ -40,9 +40,9 @@ int main(int argc, const char **argv)
         std::cout << "Usage: [executable] [-f filename.osm]" << std::endl;
         osm_data_file = "../map.osm";
     }
-    
+
     std::vector<std::byte> osm_data;
- 
+
     if( osm_data.empty() && !osm_data_file.empty() ) {
         std::cout << "Reading OpenStreetMap data from the following file: " <<  osm_data_file << std::endl;
         auto data = ReadFile(osm_data_file);
@@ -51,18 +51,16 @@ int main(int argc, const char **argv)
         else
             osm_data = std::move(*data);
     }
-    
-    // DONE 1: Declare floats `start_x`, `start_y`, `end_x`, and `end_y` and get
-    // user input for these values using std::cin. Pass the user input to the
-    // RoutePlanner object below in place of 10, 10, 90, 90.
+
+    // Declare floats `start_x`, `start_y`, `end_x`, and `end_y`
     float start_x;
     float start_y;
     float end_x;
     float end_y;
-  
-    
+
+    // Ensure input is between 0 and 100
     while (true) {
-        std::cout << "Please enter the start X coordinate: ";
+        std::cout << "Please enter a number between 0 and 100 for the start X coordinate: ";
         std::cin >> start_x;
     	if (std::cin.fail() || start_x < 0 || start_x > 100) {
     		std::cin.clear();
@@ -71,9 +69,9 @@ int main(int argc, const char **argv)
         	break;
         }
     }
-  
+
     while (true) {
-        std::cout << "Please enter the start Y coordinate: ";
+        std::cout << "Please enter a number between 0 and 100 for the start Y coordinate: ";
         std::cin >> start_y;
     	if (std::cin.fail() || start_y < 0 || start_y > 100) {
     		std::cin.clear();
@@ -82,9 +80,9 @@ int main(int argc, const char **argv)
         	break;
         }
     }
-  
+
     while (true) {
-        std::cout << "Please enter the end X coordinate: ";
+        std::cout << "Please enter a number between 0 and 100 for the end X coordinate: ";
         std::cin >> end_x;
     	if (std::cin.fail() || end_x < 0 || end_x > 100) {
     		std::cin.clear();
@@ -94,9 +92,9 @@ int main(int argc, const char **argv)
         }
     }
 
-  
+
     while (true) {
-        std::cout << "Please enter the end Y coordinate: ";
+        std::cout << "Please enter a number between 0 and 100 for the end Y coordinate: ";
         std::cin >> end_y;
     	if (std::cin.fail() || end_y < 0 || end_y > 100) {
     		std::cin.clear();
@@ -105,7 +103,7 @@ int main(int argc, const char **argv)
         	break;
         }
     }
-    
+
 
     // Build Model.
     RouteModel model{osm_data};
